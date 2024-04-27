@@ -1,11 +1,12 @@
 #include<SDL.h>
 #include<SDL_image.h>
 
-#include "Settings.h"
-#include "Tile.h"
+#include "World.h"
 #include "Player.h"
 
 #include<iostream>
+
+using namespace std;
 
 SDL_Window* window = SDL_CreateWindow("Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
 SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -44,9 +45,15 @@ int main(int argc, char* args[]) {
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
 
+	// Creating game world
+	World world(64, 64);
+	world.generate_world(renderer);
+
 	// Creating payer object
 	Player player(renderer, 100, 100, "Images/Isaac.png");
-	player.place(100, 10);
+	player.row = world.world_size[0] / 2;
+	player.column = world.world_size[1] / 2;
+	player.place((world.world_size[0] / 2) * tile_height, (world.world_size[1] / 2) * tile_width);
 
 	// Declaring viewprots
 	SDL_Rect minimap_viewport = {20, 20, 200, 200};
@@ -79,16 +86,28 @@ int main(int argc, char* args[]) {
 
 		if (keys[SDL_SCANCODE_A]) { 
 			player.go_left();
+			if (player.x < 0) {
+				player.x = 0;
+			}
 		}
 		else if (keys[SDL_SCANCODE_D]) {
 			player.go_right();
+			if (player.x > (world.world_size[0] - 1) * tile_width) {
+				player.x = ((world.world_size[0] - 1) * tile_width);
+			}
 		}
 
 		if (keys[SDL_SCANCODE_W]) {
 			player.go_up();
+			if (player.y < 0) {
+				player.y = 0;
+			}
 		}
 		else if (keys[SDL_SCANCODE_S]) {
 			player.go_down();
+			if (player.y > (world.world_size[1] - 1) * tile_height) {
+				player.y = ((world.world_size[1] - 1) * tile_height);
+			}
 		}
 
 		// rendering the scene
@@ -99,10 +118,18 @@ int main(int argc, char* args[]) {
 				// Render here minimap
 		
 			SDL_RenderSetViewport(renderer, &default_viewport);
+				
+				vector<int> first_tile = { player.row - tiles_per_screen[0] / 2, player.column - tiles_per_screen[1] / 2};
 
-				// Render here all objects on the main screen space
+				// cout << first_tile[0] << ", " << first_tile[1] << endl;
 
-				player.draw(renderer, player.x, player.y, player.rotation_angle, NULL);
+				for (int row = first_tile[0] - 1; row < (first_tile[0] + tiles_per_screen[0] + 2); row++) {
+					for (int column = first_tile[1] - 1; column < (first_tile[1] + tiles_per_screen[1] + 2); column++) {
+						world.draw(renderer, row, column, player.x, player.y);
+					}
+				}
+
+				player.draw(renderer, screen_center[0], screen_center[1], player.rotation_angle, NULL);
 
 			SDL_RenderPresent(renderer);
 

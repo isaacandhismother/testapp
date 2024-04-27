@@ -4,13 +4,14 @@
 #include<SDL_image.h>
 
 #include<iostream>
+#include "Settings.h"
 
 class GameObject
 {
 public:
 	GameObject(SDL_Renderer* renderer, int width, int height, const char* image);
 	~GameObject();
-	void draw(SDL_Renderer* renderer, int x, int y, double rotation_angle, SDL_Point* center);
+	virtual void draw(SDL_Renderer* renderer, int x, int y, double rotation_angle, SDL_Point* center);
 	void place(int x, int y);
 	SDL_Texture* loadtexture(SDL_Renderer* renderer, const char* image);
 	void rotate_left(double angle);

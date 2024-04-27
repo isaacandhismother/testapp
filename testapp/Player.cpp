@@ -4,10 +4,15 @@ Player::Player(SDL_Renderer* renderer, int width, int height, const char* image)
 {
 	hitbox_width = width;
 	hitbox_height = height / 4;
+}
 
-	pivot.x = hitbox_width / 2;
-	pivot.y = hitbox_height - (height / 2);
-	texture_center = &pivot;
+void Player::draw(SDL_Renderer* renderer, int x, int y, double rotation_angle, SDL_Point* center) 
+{
+	row = this->x / tile_width;
+	column = this->y / tile_height;
+	x -= this->width / 2;
+	y -= this->height / 2;
+	GameObject::draw(renderer, x, y, rotation_angle, center);
 }
 
 void Player::go_left() {
