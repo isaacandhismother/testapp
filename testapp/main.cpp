@@ -1,6 +1,8 @@
 #include<SDL.h>
 #include<SDL_image.h>
+#include<SDL_ttf.h>
 
+#include "SetupMenu.h"
 #include "World.h"
 #include "Player.h"
 
@@ -38,15 +40,27 @@ bool initImage() {
 	}
 }
 
+bool isLeftMouseClicked() {
+	int x, y;
+	Uint32 state = SDL_GetMouseState(&x, &y);
+	return (state & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
+}
 
 int main(int argc, char* args[]) {
+	if (TTF_Init() == -1)
+	{
+		printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+		return false;
+	}
 	bool running = true;
 
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
 
+	SetupMenu setup_menu(renderer);
+
 	// Creating game world
-	World world(64, 64);
+	World world(12, 12);
 	world.generate_world(renderer);
 
 	// Creating payer object
@@ -60,6 +74,8 @@ int main(int argc, char* args[]) {
 	SDL_Rect default_viewport = { 0, 0, width, height };
 
 	SDL_Event e;
+
+	bool left_clicked;
 
 	Uint32 frameStart, frameTime;
 
@@ -86,14 +102,14 @@ int main(int argc, char* args[]) {
 
 		if (keys[SDL_SCANCODE_A]) { 
 			player.go_left();
-			if (player.x < 0) {
-				player.x = 0;
+			if (player.x - player.width / 2 < 0) {
+				player.x = player.width / 2;
 			}
 		}
 		else if (keys[SDL_SCANCODE_D]) {
 			player.go_right();
-			if (player.x > (world.world_size[0] - 1) * tile_width) {
-				player.x = ((world.world_size[0] - 1) * tile_width);
+			if (player.x - player.width / 2 > (world.world_size[0] - 1) * tile_width) {
+				player.x = ((world.world_size[0] - 1) * tile_width) + player.width / 2;
 			}
 		}
 
@@ -110,12 +126,15 @@ int main(int argc, char* args[]) {
 			}
 		}
 
+		left_clicked = isLeftMouseClicked();
+
 		// rendering the scene
-			SDL_RenderClear(renderer);
+			
+		SDL_RenderClear(renderer);
 
 			SDL_RenderSetViewport(renderer, &minimap_viewport);
 		
-				// Render here minimap
+				// Render here a minimap
 		
 			SDL_RenderSetViewport(renderer, &default_viewport);
 				
@@ -130,8 +149,13 @@ int main(int argc, char* args[]) {
 				}
 
 				player.draw(renderer, screen_center[0], screen_center[1], player.rotation_angle, NULL);
+				
+				//setup_menu.menulist.draw(renderer, left_clicked);
+
+				setup_menu.play_button.draw(renderer, setup_menu.play_button.x, setup_menu.play_button.y, false);
 
 			SDL_RenderPresent(renderer);
+			
 
 		// setting the framerate ??
 		frameTime = SDL_GetTicks() - frameStart;
@@ -148,6 +172,7 @@ int main(int argc, char* args[]) {
 
 	SDL_Quit();
 	IMG_Quit();
+	TTF_Quit();
 
 	return 0;
 }
