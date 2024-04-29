@@ -16,12 +16,13 @@ public:
 	SDL_Texture* loadtexture(SDL_Renderer* renderer, const char* image);
 	void rotate_left(double angle);
 	void rotate_right(double angle);
+	SDL_Rect get_hitbox();
+	SDL_Texture* get_texture();
 	int x, y;
 	int row, column;
 	int width, height;
 	int hitbox_height, hitbox_width;
 	int hitbox_x, hitbox_y;
-	SDL_Point* texture_center;
 	SDL_Point pivot;
 	double rotation_angle = 0.0;
 private:
