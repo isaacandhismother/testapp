@@ -7,6 +7,7 @@ Tile::Tile(SDL_Renderer* renderer, int width, int height, const char* image) : G
 
 Tile::~Tile()
 {
+    cout << "1" << endl;
 }
 
 void Tile::draw(SDL_Renderer* renderer, int row, int column, int player_x, int player_y) {

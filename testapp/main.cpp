@@ -79,8 +79,6 @@ int main(int argc, char* args[]) {
 
 	Uint32 frameStart, frameTime;
 
-	SDL_Point point = { 1, 1 };
-
 	while (running) {
 
 		frameStart = SDL_GetTicks();
@@ -136,23 +134,23 @@ int main(int argc, char* args[]) {
 		
 				// Render here a minimap
 		
-			SDL_RenderSetViewport(renderer, &default_viewport);
-				
+			SDL_RenderSetViewport(renderer, &default_viewport);	
+
 				vector<int> first_tile = { player.row - tiles_per_screen[0] / 2, player.column - tiles_per_screen[1] / 2};
 
 				// cout << first_tile[0] << ", " << first_tile[1] << endl;
 
-				for (int row = first_tile[0] - 1; row < (first_tile[0] + tiles_per_screen[0] + 2); row++) {
-					for (int column = first_tile[1] - 1; column < (first_tile[1] + tiles_per_screen[1] + 2); column++) {
+				for (int row = first_tile[0] - 1; row < (first_tile[0] + tiles_per_screen[0] + 1); row++) {
+					for (int column = first_tile[1] - 1; column < (first_tile[1] + tiles_per_screen[1] + 1); column++) {
 						world.draw(renderer, row, column, player.x, player.y);
 					}
 				}
 
 				player.draw(renderer, screen_center[0], screen_center[1], player.rotation_angle, NULL);
 				
-				//setup_menu.menulist.draw(renderer, left_clicked);
+				setup_menu.menulist.draw(renderer, left_clicked);
 
-				setup_menu.play_button.draw(renderer, setup_menu.play_button.x, setup_menu.play_button.y, false);
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
 			SDL_RenderPresent(renderer);
 			

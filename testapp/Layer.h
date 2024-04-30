@@ -8,6 +8,7 @@ class Layer
 {
 public:
 	Layer(int rows, int columns);
+	~Layer();
 	void add_tile(Tile tile);
 	void remove_tile(Tile tile);
 	void generate_layer(SDL_Renderer* renderer);

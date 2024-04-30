@@ -8,10 +8,6 @@ Menu::Menu(int width, int height)
 
 Menu::~Menu()
 {
-	    for (Button button : buttons) {
-        delete &button;
-    }
-    buttons.clear();
 }
 
 void Menu::place(int x, int y)
@@ -36,7 +32,7 @@ SDL_Texture* Menu::loadtexture(SDL_Renderer* renderer, const char *image) {
 }
 
 
-void Menu::add_background(SDL_Renderer* renderer, string background_type, SDL_Color color, const char* image)
+void Menu::set_background(SDL_Renderer* renderer, string background_type, SDL_Color color, const char* image)
 {
 	if (background_type == "color") {
 		background_color = color;
@@ -44,6 +40,7 @@ void Menu::add_background(SDL_Renderer* renderer, string background_type, SDL_Co
 	else if (background_type == "texture") {
 		texture = loadtexture(renderer, image);
 	}
+
 	this->background_type = background_type;
 }
 
@@ -63,7 +60,6 @@ void Menu::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
 	}
 
 	if (buttons.size() != 0) {
-		
 		for (int i = 0; i < buttons.size(); i++) {
 			Button button = buttons[i];
 			button.draw(renderer, button.x, button.y, clicked);
@@ -73,6 +69,5 @@ void Menu::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
 
 void Menu::add_button(Button button)
 {
-	cout << buttons.size() << " ";
 	buttons.push_back(button);
 }

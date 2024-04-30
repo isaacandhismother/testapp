@@ -29,7 +29,7 @@ public:
     }
     SDL_Texture* load_texttexture(SDL_Renderer* renderer, const char *text, SDL_Color text_color);
     int x, y, width, height;
-    bool hover = false, active = true, is_pressed = false;
+    bool hover = false, active = true, is_pressed = true;
 private:
     const char *text;
     int font_size;

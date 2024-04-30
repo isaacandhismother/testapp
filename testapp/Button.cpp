@@ -13,9 +13,6 @@ Button::Button(SDL_Renderer* renderer, int width, int height, SDL_Color backgrou
     if (font == nullptr) {
         cout << TTF_GetError();
     }
-    else {
-        printf("SDL_font loadaded successfully!\n");
-    }
 
     default_background_color = background_color;
 }
@@ -33,16 +30,15 @@ void Button::place(int x, int y)
 
 SDL_Texture* Button::load_texttexture(SDL_Renderer* renderer, const char *text, SDL_Color text_color)
 {
-    if (text == NULL) {
-        cout << "NULL";
-    }
-
-    text_surface = TTF_RenderText_Solid(font, text, text_color);
-    if (text_surface == nullptr) {
+    text_surface = TTF_RenderText_Blended(font, text, text_color);
+    if (text_surface == NULL) {
         cout << "Can't load texture: " << TTF_GetError() << endl;
     }
     else {
         text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
+        if (text_texture == NULL) {
+            cout << "Can't load texture: "<< SDL_GetError() << endl;
+        }
     }
 
     SDL_FreeSurface(text_surface);
@@ -69,20 +65,28 @@ void Button::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
         active = false;
     }
 
+    if (hover && clicked) {
+        is_pressed = false;
+        cout<<"10"<<endl;
+    }
+
     if (active) {
-        if (hover && clicked) {
-            is_pressed = true;
+
+        if (is_pressed && !clicked) {
+            cout << "2" <<endl;
         }
-        else if (!clicked && is_pressed && hover) {
-            is_pressed = false;
-            if (function) {
-                cout << "Clicked" << endl;
-                function();
-            }
-        }
-        else {
-            is_pressed = false;
-        }
+        //if (hover && !clicked) {
+        //    cout<<"2";
+        //    is_pressed = false;
+        //}
+        //if (!clicked && hover && is_pressed) {
+        //    
+        //    if (function) {
+        //        cout << "Clicked" << endl;
+        //        function();
+        //        is_pressed = false;
+        //    }
+        //}
     }
 
     if (!clicked) {
@@ -95,17 +99,18 @@ void Button::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
 
     SDL_RenderFillRect(renderer, &rect);
 
-    SDL_SetRenderDrawColor(renderer, text_color.r, text_color.g, text_color.b, text_color.a);
+    text_texture = load_texttexture(renderer, text, text_color);
 
     text_rect = { x, y, width, height};
 
+    SDL_QueryTexture(text_texture, nullptr, nullptr, NULL, NULL);
+
     SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
     
+    SDL_DestroyTexture(text_texture);
 }
 
 void Button::set_text(SDL_Renderer* renderer, const char *text)
 {
     this->text = text;
-
-    text_texture = load_texttexture(renderer, text, text_color);
 }

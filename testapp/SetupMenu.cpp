@@ -1,34 +1,35 @@
 #include "SetupMenu.h"
 
-SetupMenu::SetupMenu(SDL_Renderer* renderer):
+SetupMenu::SetupMenu(SDL_Renderer* renderer) : 
+	menulist(),
+	main_menu(width, height),
+	play_button(renderer, 300, 50, black, white, 32)
 {
 	// Creating menus
-
-	SDL_Color black = {0, 0, 0, 255};
-
-	SDL_Color white = { 255, 255, 255,255 };
-
-	SDL_Color grey = { 150, 150, 150, 255 };
-
-	Menu main_menu.add_background(renderer, "color", white);
-	main_menu.place(0, 0);
-	menulist.add(main_menu);
 
 	//Menu choose_savestate_menu(width, height);
 	//choose_savestate_menu.place(0, 0);
 	//Menu create_world_menu(width, height);
 	//create_world_menu.place(0, 0);
-	//Menu settings_menu(width, height);
-	//settings_menu.place(0, 0);
 	//Menu pause_menu(width, height);
 	//pause_menu.place(0, 0);
 
 	//menulist.add(&main_menu);
+	
 
-	Button play_button(renderer, 300, 50, black, white, 32);
+	main_menu.set_background(renderer, "color", white);
+	main_menu.place(0, 0);
+
 	play_button.place((width / 2) - play_button.width / 2, 200);
 	play_button.set_text(renderer, "Singleplayer");
-	
+
+	main_menu.add_button(play_button);
+
+	menulist.add(main_menu);
+
+//	settings_menu.set_background(renderer, "color", {50, 50, 0, 255});
+//	settings_menu.place(0, 0);
+
 	//main_menu.add_button(play_button);
 	//play_button.set_function(add_create_world_menu);
 
@@ -130,6 +131,14 @@ SetupMenu::~SetupMenu()
 {
 }
 
+//Menu SetupMenu::settings_menu(SDL_Renderer* renderer)
+//{
+//	Menu settings_menu(width, height);
+//	settings_menu.set_background(renderer, "color", {50, 50, 0, 255});
+//	settings_menu.place(0, 0);
+//	return settings_menu;
+//}
+
 //void add_main_menu() {
 //	Menu main_menu = main_menu;
 //	menulist.add(&main_menu);
@@ -144,3 +153,7 @@ SetupMenu::~SetupMenu()
 //	Menu setting_menu = settings_menu;
 //	menulist.add(&settings_menu);
 //};
+
+void SetupMenu::add_settings_menu()
+{
+}

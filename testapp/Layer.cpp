@@ -8,6 +8,9 @@ Layer::Layer(int rows, int columns){
     }
 }
 
+Layer::~Layer() {
+}
+
 void Layer::add_tile(Tile tile)
 {
 }
