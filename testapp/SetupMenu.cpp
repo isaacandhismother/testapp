@@ -3,7 +3,9 @@
 SetupMenu::SetupMenu(SDL_Renderer* renderer) : 
 	menulist(),
 	main_menu(width, height),
-	play_button(renderer, 300, 50, black, white, 32)
+	settings_menu(width, height),
+	play_button(renderer, 300, 50, black, white, 40),
+	settings_button(renderer, 250, 50, black, white, 40)
 {
 	// Creating menus
 
@@ -13,25 +15,29 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	//create_world_menu.place(0, 0);
 	//Menu pause_menu(width, height);
 	//pause_menu.place(0, 0);
-
-	//menulist.add(&main_menu);
 	
-
+	// Main menu
 	main_menu.set_background(renderer, "color", white);
 	main_menu.place(0, 0);
 
+	// Play button
 	play_button.place((width / 2) - play_button.width / 2, 200);
 	play_button.set_text(renderer, "Singleplayer");
 
+
 	main_menu.add_button(play_button);
+	// Settings button
+	settings_button.place((width / 2) - settings_button.width / 2, 270);
+	settings_button.set_text(renderer, "Settings");
+	
 
-	menulist.add(main_menu);
+	main_menu.add_button(settings_button);
 
-//	settings_menu.set_background(renderer, "color", {50, 50, 0, 255});
-//	settings_menu.place(0, 0);
+	// Settings menu
 
-	//main_menu.add_button(play_button);
-	//play_button.set_function(add_create_world_menu);
+	settings_menu.set_background(renderer, "color", { 50, 50, 0, 255 });
+	settings_menu.place(0, 0);
+	
 
 		/*# savestates and savestate buttons
 		savestate1 = SaveState('saves/save1')
@@ -125,6 +131,8 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	//pause_menu.add_background(renderer, "color", { 0, 0, 0, 200 });
 	//pause_menu.add(back_to_game_button);
 	//pause_menu.add(quit_to_menu_button);
+
+	menulist.add(main_menu);
 }
 
 SetupMenu::~SetupMenu()
@@ -154,6 +162,4 @@ SetupMenu::~SetupMenu()
 //	menulist.add(&settings_menu);
 //};
 
-void SetupMenu::add_settings_menu()
-{
-}
+

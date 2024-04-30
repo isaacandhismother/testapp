@@ -53,44 +53,36 @@ void Button::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
 
     background_color = default_background_color;
 
-    hover = false;
+    *hover_ptr = false;
     background_color = default_background_color;
 
     if ((x < mouse_x && mouse_x < x + width) && (y < mouse_y && mouse_y < y + height)) {
-        hover = true;
+        *hover_ptr = true;
         background_color = { 128 ,128, 128, 255 };
     }
 
-    if (!hover && clicked) {
-        active = false;
+    if (!*hover_ptr && clicked) {
+        *active_ptr = false;
     }
 
-    if (hover && clicked) {
-        is_pressed = false;
-        cout<<"10"<<endl;
-    }
-
-    if (active) {
-
-        if (is_pressed && !clicked) {
-            cout << "2" <<endl;
+    if (*active_ptr) {
+        if (*hover_ptr && clicked) {
+            *is_pressed_ptr = true;
         }
-        //if (hover && !clicked) {
-        //    cout<<"2";
-        //    is_pressed = false;
-        //}
-        //if (!clicked && hover && is_pressed) {
-        //    
-        //    if (function) {
-        //        cout << "Clicked" << endl;
-        //        function();
-        //        is_pressed = false;
-        //    }
-        //}
+        else if (!clicked && *is_pressed_ptr && *hover_ptr) {
+            cout << "3000" << endl;
+            *is_pressed_ptr = false;
+            //if (function) {
+                //function(args);
+            //}
+        }
+        else {
+            *is_pressed_ptr = false;
+        }
     }
 
     if (!clicked) {
-        active = true;
+        *active_ptr = true;
     }
 
     SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
@@ -103,7 +95,10 @@ void Button::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
 
     text_rect = { x, y, width, height};
 
-    SDL_QueryTexture(text_texture, nullptr, nullptr, NULL, NULL);
+    SDL_QueryTexture(text_texture, nullptr, nullptr, &text_rect.w, &text_rect.h);
+
+    text_rect.x += width / 2 - text_rect.w / 2;
+    text_rect.y += height / 2 - text_rect.h / 2;
 
     SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
     
