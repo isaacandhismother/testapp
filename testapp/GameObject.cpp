@@ -11,22 +11,21 @@ GameObject::GameObject(SDL_Renderer* renderer, int width, int height, const char
 
 GameObject::~GameObject()
 {
-	SDL_DestroyTexture(texture);	
+	SDL_DestroyTexture(texture);
 }
 
 void GameObject::draw(SDL_Renderer* renderer, int x, int y, double rotation_angle, SDL_Point* center) {
-
-	rect = { x, y, width, height };
+	rect = { x, y, this->width, this->height };
 
 	SDL_RenderCopyEx(renderer, texture, NULL, &rect, rotation_angle, center, SDL_FLIP_NONE);
 
 }
 
-void GameObject::place(int nX, int nY) {
-	x = nX;
-	y = nY;
-	hitbox_x = nX;
-	hitbox_y = nY;
+void GameObject::place(int x, int y) {
+	this->x = x;
+	this->y = y;
+	this->hitbox_x = x;
+	this->hitbox_y = y;
 }
 
 SDL_Texture* GameObject::loadtexture(SDL_Renderer* renderer, const char* image) {
@@ -46,12 +45,12 @@ SDL_Texture* GameObject::loadtexture(SDL_Renderer* renderer, const char* image) 
 
 void GameObject::rotate_left(double angle)
 {
-	rotation_angle -= angle;
+	this->rotation_angle -= angle;
 }
 
 void GameObject::rotate_right(double angle)
 {
-	rotation_angle += angle;
+	this->rotation_angle += angle;
 }
 
 SDL_Rect GameObject::get_hitbox()

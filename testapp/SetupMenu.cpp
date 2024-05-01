@@ -5,7 +5,9 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	main_menu(width, height),
 	settings_menu(width, height),
 	play_button(renderer, 300, 50, black, white, 40),
-	settings_button(renderer, 250, 50, black, white, 40)
+	settings_button(renderer, 250, 50, black, white, 40),
+	quit_button(renderer, 200, 50, black, white, 40),
+	back_button(renderer, 200, 50, black, white, 40)
 {
 	// Creating menus
 
@@ -15,29 +17,42 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	//create_world_menu.place(0, 0);
 	//Menu pause_menu(width, height);
 	//pause_menu.place(0, 0);
-	
+
+	// Back button
+	back_button.place(width - back_button.width - 20, height - back_button.height - 20);
+	back_button.set_text("Back");
+	back_button.set_function(bind(&SetupMenu::go_back, this));
+
 	// Main menu
 	main_menu.set_background(renderer, "color", white);
 	main_menu.place(0, 0);
 
 	// Play button
 	play_button.place((width / 2) - play_button.width / 2, 200);
-	play_button.set_text(renderer, "Singleplayer");
+	play_button.set_text("Singleplayer");
+	play_button.set_function(bind(&SetupMenu::start_game, this));
 
-
-	main_menu.add_button(play_button);
+	main_menu.add_button(&play_button);
 	// Settings button
 	settings_button.place((width / 2) - settings_button.width / 2, 270);
-	settings_button.set_text(renderer, "Settings");
+	settings_button.set_text("Settings");
+	settings_button.set_function(bind(&SetupMenu::add_settings_menu, this));
+
+	main_menu.add_button(&settings_button);
+
+	// Quit button
+	quit_button.place((width / 2) - quit_button.width / 2, 420);
+	quit_button.set_text("Quit");
+
+
+	main_menu.add_button(&quit_button);
 	
-
-	main_menu.add_button(settings_button);
-
 	// Settings menu
 
-	settings_menu.set_background(renderer, "color", { 50, 50, 0, 255 });
+	settings_menu.set_background(renderer, "color", { 50, 50, 50, 100 });
 	settings_menu.place(0, 0);
 	
+	settings_menu.add_button(&back_button);
 
 		/*# savestates and savestate buttons
 		savestate1 = SaveState('saves/save1')
@@ -78,9 +93,6 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 
 		//resume_button = Button(pause_menu.width / 2, 200, 200, 50, 'Resume', 'black', 'white', 32)
 
-		//settings_button = Button(main_menu.width / 2, 320, 200, 50, 'Settings', 'black', 'white', 32)
-		//settings_button.set_function(function = add_menu, args = (settings_menu, ))
-
 		//quit_button = Button(main_menu.width / 2, 420, 200, 50, 'Quit', 'black', 'white', 32)
 		//quit_button.set_function(function = exit_game, args = ())
 
@@ -94,13 +106,6 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 
 		//quit_to_menu_button = Button(pause_menu.width / 2, 350, 250, 45, 'Main menu', 'black', 'white', 28)
 		//quit_to_menu_button.set_function(function = quit_to_menu, args = ());
-
-		// Main menu
-
-	//main_menu.add_background(renderer, "color", grey);
-	//main_menu.add_button(&play_button);
-	//main_menu.add(settings_button);
-	//main_menu.add(quit_button);
 
 		// Play menu
 
@@ -132,12 +137,14 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	//pause_menu.add(back_to_game_button);
 	//pause_menu.add(quit_to_menu_button);
 
-	menulist.add(main_menu);
+	menulist.add(&main_menu);
 }
 
 SetupMenu::~SetupMenu()
 {
 }
+
+
 
 //Menu SetupMenu::settings_menu(SDL_Renderer* renderer)
 //{
@@ -161,5 +168,15 @@ SetupMenu::~SetupMenu()
 //	Menu setting_menu = settings_menu;
 //	menulist.add(&settings_menu);
 //};
+void SetupMenu::start_game() {
+	menulist.remove_last();
+}
 
+void SetupMenu::add_settings_menu()
+{
+	menulist.add(&settings_menu);
+}
 
+void SetupMenu::go_back() {
+	menulist.remove_last();
+}

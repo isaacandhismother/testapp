@@ -61,13 +61,13 @@ void Menu::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
 
 	if (buttons.size() != 0) {
 		for (int i = 0; i < buttons.size(); i++) {
-			Button button = buttons[i];
-			button.draw(renderer, button.x, button.y, clicked);
+			Button* button = buttons[i];
+			button->draw(renderer, button->x, button->y, clicked);
 		}
 	}
 }
 
-void Menu::add_button(Button button)
+void Menu::add_button(Button* button)
 {
 	buttons.push_back(button);
 }

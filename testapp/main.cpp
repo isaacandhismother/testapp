@@ -91,67 +91,67 @@ int main(int argc, char* args[]) {
 
 		const Uint8* keys = SDL_GetKeyboardState(NULL);
 
-		if (keys[SDL_SCANCODE_Q]) {
-			player.rotate_left(1);
-		}
-		else if (keys[SDL_SCANCODE_E]) {
-			player.rotate_right(1);
-		}
-
-		if (keys[SDL_SCANCODE_A]) { 
-			player.go_left();
-			if (player.x - player.width / 2 < 0) {
-				player.x = player.width / 2;
-			}
-		}
-		else if (keys[SDL_SCANCODE_D]) {
-			player.go_right();
-			if (player.x - player.width / 2 > (world.world_size[0] - 1) * tile_width) {
-				player.x = ((world.world_size[0] - 1) * tile_width) + player.width / 2;
-			}
-		}
-
-		if (keys[SDL_SCANCODE_W]) {
-			player.go_up();
-			if (player.y < 0) {
-				player.y = 0;
-			}
-		}
-		else if (keys[SDL_SCANCODE_S]) {
-			player.go_down();
-			if (player.y > (world.world_size[1] - 1) * tile_height) {
-				player.y = ((world.world_size[1] - 1) * tile_height);
-			}
-		}
-
 		left_clicked = isLeftMouseClicked();
 
 		// rendering the scene
 			
 		SDL_RenderClear(renderer);
+		//if (setup_menu.menulist.is_empty()) {
+			if (keys[SDL_SCANCODE_Q]) {
+				player.rotate_left(1);
+			}
+			else if (keys[SDL_SCANCODE_E]) {
+				player.rotate_right(1);
+			}
+
+			if (keys[SDL_SCANCODE_A]) {
+				player.go_left();
+				if (player.x - player.width / 2 < 0) {
+					player.x = player.width / 2;
+				}
+			}
+			else if (keys[SDL_SCANCODE_D]) {
+				player.go_right();
+				if (player.x - player.width / 2 > (world.world_size[0] - 1) * tile_width) {
+					player.x = ((world.world_size[0] - 1) * tile_width) + player.width / 2;
+				}
+			}
+
+			if (keys[SDL_SCANCODE_W]) {
+				player.go_up();
+				if (player.y < 0) {
+					player.y = 0;
+				}
+			}
+			else if (keys[SDL_SCANCODE_S]) {
+				player.go_down();
+				if (player.y > (world.world_size[1] - 1) * tile_height) {
+					player.y = ((world.world_size[1] - 1) * tile_height);
+				}
+			}
 
 			SDL_RenderSetViewport(renderer, &minimap_viewport);
-		
-				// Render here a minimap
-		
-			SDL_RenderSetViewport(renderer, &default_viewport);	
 
-				vector<int> first_tile = { player.row - tiles_per_screen[0] / 2, player.column - tiles_per_screen[1] / 2};
+			// Render here a minimap
 
-				// cout << first_tile[0] << ", " << first_tile[1] << endl;
+			SDL_RenderSetViewport(renderer, &default_viewport);
 
-				for (int row = first_tile[0] - 1; row < (first_tile[0] + tiles_per_screen[0] + 1); row++) {
-					for (int column = first_tile[1] - 1; column < (first_tile[1] + tiles_per_screen[1] + 1); column++) {
-						world.draw(renderer, row, column, player.x, player.y);
-					}
+			vector<int> first_tile = { player.row - tiles_per_screen[0] / 2, player.column - tiles_per_screen[1] / 2 };
+
+			// cout << first_tile[0] << ", " << first_tile[1] << endl;
+
+			for (int row = first_tile[0] - 1; row < (first_tile[0] + tiles_per_screen[0] + 1); row++) {
+				for (int column = first_tile[1] - 1; column < (first_tile[1] + tiles_per_screen[1] + 1); column++) {
+					world.draw(renderer, row, column, player.x, player.y);
 				}
+			}
 
-				player.draw(renderer, screen_center[0], screen_center[1], player.rotation_angle, NULL);
-				
-				setup_menu.menulist.draw(renderer, left_clicked);
+			player.draw(renderer, screen_center[0], screen_center[1], player.rotation_angle, NULL);
 
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
+
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+				//setup_menu.menulist.draw(renderer, left_clicked);
 			SDL_RenderPresent(renderer);
 			
 

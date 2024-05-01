@@ -28,6 +28,10 @@ void Button::place(int x, int y)
     this->y = y;
 }
 
+void Button::set_function(function<void()> func) {
+    callback_function = func;
+}
+
 SDL_Texture* Button::load_texttexture(SDL_Renderer* renderer, const char *text, SDL_Color text_color)
 {
     text_surface = TTF_RenderText_Blended(font, text, text_color);
@@ -53,36 +57,35 @@ void Button::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
 
     background_color = default_background_color;
 
-    *hover_ptr = false;
+    this->hover = false;
     background_color = default_background_color;
 
     if ((x < mouse_x && mouse_x < x + width) && (y < mouse_y && mouse_y < y + height)) {
-        *hover_ptr = true;
+        this->hover = true;
         background_color = { 128 ,128, 128, 255 };
     }
 
-    if (!*hover_ptr && clicked) {
-        *active_ptr = false;
+    if (!this->hover && clicked) {
+        this->active = false;
     }
 
-    if (*active_ptr) {
-        if (*hover_ptr && clicked) {
-            *is_pressed_ptr = true;
+    if (this->active) {
+        if (this->hover && clicked) {
+            this->is_pressed = true;
         }
-        else if (!clicked && *is_pressed_ptr && *hover_ptr) {
-            cout << "3000" << endl;
-            *is_pressed_ptr = false;
-            //if (function) {
-                //function(args);
-            //}
+        else if (!clicked && this->is_pressed && this->hover) {
+            this->is_pressed = false;
+            if (callback_function) {
+                callback_function();
+            }
         }
         else {
-            *is_pressed_ptr = false;
+            this->is_pressed = false;
         }
     }
 
     if (!clicked) {
-        *active_ptr = true;
+        this->active = true;
     }
 
     SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
@@ -105,7 +108,7 @@ void Button::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
     SDL_DestroyTexture(text_texture);
 }
 
-void Button::set_text(SDL_Renderer* renderer, const char *text)
+void Button::set_text(const char *text)
 {
     this->text = text;
 }

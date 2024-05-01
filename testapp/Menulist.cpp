@@ -8,7 +8,7 @@ Menulist::~Menulist()
 {
 }
 
-void Menulist::add(Menu menu)
+void Menulist::add(Menu* menu)
 {
 	menus.push_back(menu);
 }
@@ -26,8 +26,8 @@ bool Menulist::is_empty()
 void Menulist::draw(SDL_Renderer* renderer, bool clicked)
 {
 	if (menus.size() != 0) {
-		Menu menu = menus[menus.size() - 1];
-		menu.draw(renderer, menu.x, menu.y, clicked);
+		Menu* menu = menus[menus.size() - 1];
+		menu->draw(renderer, menu->x, menu->y, clicked);
 	}
 }
 

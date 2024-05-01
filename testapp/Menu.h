@@ -12,10 +12,10 @@ public:
 	SDL_Texture* loadtexture(SDL_Renderer* renderer, const char* image);
 	void set_background(SDL_Renderer* renderer, string background_type, SDL_Color color = { 255, 255, 255, 255 }, const char* image = "");
 	void draw(SDL_Renderer* renderer, int  x, int y, bool clicked);
-	void add_button(Button button);
+	void add_button(Button* button);
 	int x, y;
 	int width, height;
-	vector<Button> buttons;
+	vector<Button*> buttons;
 private:
 	string background_type;
 	SDL_Rect rect;

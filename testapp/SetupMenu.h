@@ -23,10 +23,17 @@ public:
 
 	Button play_button;
 	Button settings_button;
+	Button quit_button;
+	Button back_button;
 
 	void add_main_menu();
 	void add_choose_savestate_menu();
 	void add_create_world_menu();
 	void add_settings_menu();
 	void add_pause_menu();
+	
+private:
+	void start_game();
+	void go_back();
+	void print_word();
 };
