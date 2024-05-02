@@ -32,6 +32,8 @@ public:
 	void add_settings_menu();
 	void add_pause_menu();
 	
+	bool is_paused;
+
 private:
 	void start_game();
 	void go_back();

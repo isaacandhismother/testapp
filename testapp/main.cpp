@@ -1,10 +1,8 @@
-#include<SDL.h>
-#include<SDL_image.h>
-#include<SDL_ttf.h>
-
 #include "SetupMenu.h"
 #include "World.h"
 #include "Player.h"
+
+#include "Engine.h"
 
 #include<iostream>
 
@@ -73,6 +71,8 @@ int main(int argc, char* args[]) {
 	SDL_Rect minimap_viewport = {20, 20, 200, 200};
 	SDL_Rect default_viewport = { 0, 0, width, height };
 
+	Engine engine(renderer, 12, 12);
+
 	SDL_Event e;
 
 	bool left_clicked;
@@ -96,62 +96,65 @@ int main(int argc, char* args[]) {
 		// rendering the scene
 			
 		SDL_RenderClear(renderer);
-		//if (setup_menu.menulist.is_empty()) {
-			if (keys[SDL_SCANCODE_Q]) {
-				player.rotate_left(1);
-			}
-			else if (keys[SDL_SCANCODE_E]) {
-				player.rotate_right(1);
-			}
 
-			if (keys[SDL_SCANCODE_A]) {
-				player.go_left();
-				if (player.x - player.width / 2 < 0) {
-					player.x = player.width / 2;
-				}
-			}
-			else if (keys[SDL_SCANCODE_D]) {
-				player.go_right();
-				if (player.x - player.width / 2 > (world.world_size[0] - 1) * tile_width) {
-					player.x = ((world.world_size[0] - 1) * tile_width) + player.width / 2;
-				}
-			}
+		if (setup_menu.menulist.is_empty()) {
+		//	if (keys[SDL_SCANCODE_Q]) {
+		//		player.rotate_left(1);
+		//	}
+		//	else if (keys[SDL_SCANCODE_E]) {
+		//		player.rotate_right(1);
+		//	}
 
-			if (keys[SDL_SCANCODE_W]) {
-				player.go_up();
-				if (player.y < 0) {
-					player.y = 0;
-				}
-			}
-			else if (keys[SDL_SCANCODE_S]) {
-				player.go_down();
-				if (player.y > (world.world_size[1] - 1) * tile_height) {
-					player.y = ((world.world_size[1] - 1) * tile_height);
-				}
-			}
+		//	if (keys[SDL_SCANCODE_A]) {
+		//		player.go_left();
+		//		if (player.x - player.width / 2 < 0) {
+		//			player.x = player.width / 2;
+		//		}
+		//	}
+		//	else if (keys[SDL_SCANCODE_D]) {
+		//		player.go_right();
+		//		if (player.x - player.width / 2 > (world.world_size[0] - 1) * tile_width) {
+		//			player.x = ((world.world_size[0] - 1) * tile_width) + player.width / 2;
+		//		}
+		//	}
 
-			SDL_RenderSetViewport(renderer, &minimap_viewport);
+		//	if (keys[SDL_SCANCODE_W]) {
+		//		player.go_up();
+		//		if (player.y < 0) {
+		//			player.y = 0;
+		//		}
+		//	}
+		//	else if (keys[SDL_SCANCODE_S]) {
+		//		player.go_down();
+		//		if (player.y > (world.world_size[1] - 1) * tile_height) {
+		//			player.y = ((world.world_size[1] - 1) * tile_height);
+		//		}
+		//	}
 
-			// Render here a minimap
+		//	SDL_RenderSetViewport(renderer, &minimap_viewport);
 
-			SDL_RenderSetViewport(renderer, &default_viewport);
+		//	// Render here a minimap
 
-			vector<int> first_tile = { player.row - tiles_per_screen[0] / 2, player.column - tiles_per_screen[1] / 2 };
+		//	SDL_RenderSetViewport(renderer, &default_viewport);
 
-			// cout << first_tile[0] << ", " << first_tile[1] << endl;
+		//	vector<int> first_tile = { player.row - tiles_per_screen[0] / 2, player.column - tiles_per_screen[1] / 2 };
 
-			for (int row = first_tile[0] - 1; row < (first_tile[0] + tiles_per_screen[0] + 1); row++) {
-				for (int column = first_tile[1] - 1; column < (first_tile[1] + tiles_per_screen[1] + 1); column++) {
-					world.draw(renderer, row, column, player.x, player.y);
-				}
-			}
+		//	// cout << first_tile[0] << ", " << first_tile[1] << endl;
 
-			player.draw(renderer, screen_center[0], screen_center[1], player.rotation_angle, NULL);
+		//	for (int row = first_tile[0] - 1; row < (first_tile[0] + tiles_per_screen[0] + 1); row++) {
+		//		for (int column = first_tile[1] - 1; column < (first_tile[1] + tiles_per_screen[1] + 1); column++) {
+		//			world.draw(renderer, row, column, player.x, player.y);
+		//		}
+		//	}
 
+		//	player.draw(renderer, screen_center[0], screen_center[1], player.rotation_angle, NULL);
+		engine.run_engine(renderer);
 
+		}
 
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-				//setup_menu.menulist.draw(renderer, left_clicked);
+				setup_menu.menulist.draw(renderer, left_clicked);
+
 			SDL_RenderPresent(renderer);
 			
 
