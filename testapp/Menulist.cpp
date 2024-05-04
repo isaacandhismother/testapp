@@ -6,6 +6,7 @@ Menulist::Menulist()
 
 Menulist::~Menulist()
 {
+	cout << "menulist destroyed" << endl;
 }
 
 void Menulist::add(Menu* menu)
@@ -21,6 +22,14 @@ void Menulist::remove_last()
 bool Menulist::is_empty()
 {
 	return menus.empty();
+}
+
+void Menulist::clear() {
+	if (!is_empty()) {
+		for (size_t i = 0; i < menus.size(); i++) {
+			menus.pop_back();
+		}
+	}
 }
 
 void Menulist::draw(SDL_Renderer* renderer, bool clicked)

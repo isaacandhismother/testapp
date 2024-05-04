@@ -11,10 +11,11 @@ GameObject::GameObject(SDL_Renderer* renderer, int width, int height, const char
 
 GameObject::~GameObject()
 {
-	SDL_DestroyTexture(texture);
+	cout << "GameObject destroyed" << endl;
 }
 
 void GameObject::draw(SDL_Renderer* renderer, int x, int y, double rotation_angle, SDL_Point* center) {
+
 	rect = { x, y, this->width, this->height };
 
 	SDL_RenderCopyEx(renderer, texture, NULL, &rect, rotation_angle, center, SDL_FLIP_NONE);

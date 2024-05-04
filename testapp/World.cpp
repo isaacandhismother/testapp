@@ -25,7 +25,7 @@ void World::generate_world(SDL_Renderer* renderer)
 void World::draw(SDL_Renderer* renderer, int row, int column, int player_x, int player_y)
 {
 	for (int layer_num = 0; layer_num < layers.size(); layer_num++) {
-		Layer layer = layers[layer_num];
-		layer.draw(renderer, row, column, player_x, player_y);
+		Layer *layer = &layers[layer_num];
+		layer->draw(renderer, row, column, player_x, player_y);
 	}
 }

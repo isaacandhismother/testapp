@@ -9,6 +9,7 @@ Layer::Layer(int rows, int columns){
 }
 
 Layer::~Layer() {
+    cout << "layer destroyed" << endl;
 }
 
 void Layer::add_tile(Tile tile)

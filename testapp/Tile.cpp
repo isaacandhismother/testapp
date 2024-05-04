@@ -7,12 +7,14 @@ Tile::Tile(SDL_Renderer* renderer, int width, int height, const char* image) : G
 
 Tile::~Tile()
 {
-    cout << "1" << endl;
+    cout << "tile destroyed" << endl;
+    GameObject::~GameObject();
 }
 
 void Tile::draw(SDL_Renderer* renderer, int row, int column, int player_x, int player_y) {
 
     GameObject::draw(renderer, screen_center[0] + this->x - player_x, screen_center[1] + this->y - player_y, 0, NULL);
+
     for (size_t i = 0; i < objects.size(); i++) {
         GameObject* object = objects[i];
         vector<int> pos_on_screen = {screen_center[0] + object->x - player_x, screen_center[1] + object->y - player_y};

@@ -8,6 +8,7 @@ Menu::Menu(int width, int height)
 
 Menu::~Menu()
 {
+	cout << "menu destroyed" << endl;
 }
 
 void Menu::place(int x, int y)

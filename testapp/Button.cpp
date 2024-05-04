@@ -19,6 +19,7 @@ Button::Button(SDL_Renderer* renderer, int width, int height, SDL_Color backgrou
 
 Button::~Button()
 {
+    cout << "button destroyed" << endl;
     SDL_DestroyTexture(text_texture);
 }
 
