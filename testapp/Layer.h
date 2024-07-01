@@ -11,9 +11,14 @@ public:
 	~Layer();
 	void add_tile(Tile tile);
 	void remove_tile(Tile tile);
+
 	void generate_layer(SDL_Renderer* renderer);
+
+	void save(ofstream& file);
+	void load(SDL_Renderer* renderer, ifstream& file);
 	void draw(SDL_Renderer* renderer, int x, int y, int player_x, int player_y);
+private:
 	vector<vector<Tile*>> tiles;
-	vector<int> layer_size;
+	int rows, columns;
 };
 

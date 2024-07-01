@@ -13,6 +13,9 @@ public:
 	void draw(SDL_Renderer* renderer, int row, int column, int player_x, int player_y);
 	void add_object(GameObject* object);
 	void remove_object(GameObject* object);
+ 
+	void save(ofstream& file) const override;
+	void load(SDL_Renderer* renderer, ifstream& file);
 	vector<GameObject*> objects;
 };
 

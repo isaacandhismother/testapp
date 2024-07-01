@@ -63,6 +63,10 @@ void Engine::run_engine(SDL_Renderer* renderer)
 			this->player.y = ((this->world.world_size[1] - 1) * tile_height);
 		}
 	}
+	else if (keys[SDL_SCANCODE_H]) {
+		Chunk second_chunk(0, 0);
+		second_chunk.load(renderer);
+	}
 
 	SDL_RenderClear(renderer);
 	

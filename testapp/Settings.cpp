@@ -5,5 +5,7 @@ int height = 600;
 int fps = 60;
 int tile_width = 80;
 int tile_height = 80;
+int chunk_size = 10;
+bool running = true;
 vector<int> screen_center = {width / 2, height / 2};
 vector<int> tiles_per_screen = { width / tile_width, height / tile_height };

@@ -51,6 +51,9 @@
     <ClCompile Include="World.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tile.h">
@@ -87,6 +90,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="SetupMenu.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

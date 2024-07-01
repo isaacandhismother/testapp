@@ -26,9 +26,10 @@ bool Menulist::is_empty()
 
 void Menulist::clear() {
 	if (!is_empty()) {
-		for (size_t i = 0; i < menus.size(); i++) {
+		for (size_t i = 0; i < menus.size() + 1; i++) {
 			menus.pop_back();
 		}
+		cout << "Menulist clear!" << endl;
 	}
 }
 

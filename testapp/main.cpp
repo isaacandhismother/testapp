@@ -43,7 +43,6 @@ int main(int argc, char* args[]) {
 		printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 		return false;
 	}
-	bool running = true;
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_Surface* screenSurface = SDL_GetWindowSurface(window);

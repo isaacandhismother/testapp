@@ -1,10 +1,14 @@
 #include "SetupMenu.h"
 
-SetupMenu::SetupMenu(SDL_Renderer* renderer) : 
+SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	menulist(),
 	main_menu(width, height),
+	choose_savestate_menu(width, height),
 	settings_menu(width, height),
 	play_button(renderer, 300, 50, black, white, 40),
+	savestate1_button(renderer, 200, 300, white, black, 40),
+	savestate2_button(renderer, 200, 100, white, black, 40),
+	savestate3_button(renderer, 200, 100, white, black, 40),
 	settings_button(renderer, 250, 50, black, white, 40),
 	quit_button(renderer, 200, 50, black, white, 40),
 	back_button(renderer, 200, 50, black, white, 40)
@@ -24,13 +28,13 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	back_button.set_function(bind(&SetupMenu::go_back, this));
 
 	// Main menu
-	main_menu.set_background(renderer, "color", white);
+	main_menu.set_background(renderer, "color", {20, 50, 50, 100});
 	main_menu.place(0, 0);
 
 	// Play button
 	play_button.place((width / 2) - play_button.width / 2, 200);
 	play_button.set_text("Singleplayer");
-	play_button.set_function(bind(&SetupMenu::start_game, this));
+	play_button.set_function(bind(&SetupMenu::add_choose_savestate_menu, this));
 
 	main_menu.add_button(&play_button);
 	// Settings button
@@ -43,6 +47,7 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	// Quit button
 	quit_button.place((width / 2) - quit_button.width / 2, 420);
 	quit_button.set_text("Quit");
+	quit_button.set_function(bind(&SetupMenu::quit, this));
 
 
 	main_menu.add_button(&quit_button);
@@ -53,6 +58,22 @@ SetupMenu::SetupMenu(SDL_Renderer* renderer) :
 	settings_menu.place(0, 0);
 	
 	settings_menu.add_button(&back_button);
+
+	// Savestate menu
+	choose_savestate_menu.set_background(renderer, "color", {50, 50, 150, 100});
+	choose_savestate_menu.place(0, 0);
+
+	choose_savestate_menu.add_button(&savestate1_button);
+	//choose_savestate_menu.add_button(&savestate2_button);
+	//choose_savestate_menu.add_button(&savestate3_button);
+
+	savestate1_button.place(100, height/5);
+	savestate1_button.set_text("Save \n 1");
+	savestate1_button.set_text_align("top");
+	savestate1_button.set_text_margin(10);
+	savestate1_button.set_function(bind(&SetupMenu::start_game, this));
+
+	choose_savestate_menu.add_button(&back_button);
 
 		/*# savestates and savestate buttons
 		savestate1 = SaveState('saves/save1')
@@ -169,7 +190,11 @@ SetupMenu::~SetupMenu()
 //	menulist.add(&settings_menu);
 //};
 void SetupMenu::start_game() {
-	menulist.remove_last();
+	menulist.clear();
+}
+
+void SetupMenu::add_choose_savestate_menu() {
+	menulist.add(&choose_savestate_menu);
 }
 
 void SetupMenu::add_settings_menu()
@@ -179,4 +204,8 @@ void SetupMenu::add_settings_menu()
 
 void SetupMenu::go_back() {
 	menulist.remove_last();
+}
+
+void SetupMenu::quit() {
+	running = false;
 }

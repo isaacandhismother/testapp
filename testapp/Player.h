@@ -17,6 +17,8 @@ public:
 	void go_right();
 	void go_up();
 	void go_down();
+	void save();
+	void load();
 	int speed = 5;
 	short row, column;
 };

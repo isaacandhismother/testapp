@@ -51,6 +51,35 @@ SDL_Texture* Button::load_texttexture(SDL_Renderer* renderer, const char *text, 
     return text_texture;
 }
 
+void Button::set_text_align(string text_align) {
+    this->text_align = text_align;
+}
+
+void Button::set_text_margin(int text_margin) {
+    this->text_margin = text_margin;
+}
+
+vector<string> split(const string& text, char delimiter) {
+    vector<string> lines;
+    string line;
+
+    for (char ch : text) {
+        if (ch == delimiter) {
+            lines.push_back(line);
+            line.clear();
+        }
+        else {
+            line += ch;
+        }
+    }
+
+    if (!line.empty()) {
+        lines.push_back(line);
+    }
+
+    return lines;
+}
+
 void Button::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
 {
     int mouse_x, mouse_y;
@@ -89,24 +118,39 @@ void Button::draw(SDL_Renderer* renderer, int x, int y, bool clicked)
         this->active = true;
     }
 
+    std::vector<std::string> lines = split(text, '\n');
+    int lineHeight = TTF_FontHeight(font);
+
     SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
 
     rect = { x, y, width, height };
 
     SDL_RenderFillRect(renderer, &rect);
 
-    text_texture = load_texttexture(renderer, text, text_color);
+    for (size_t i{ 0 }; i < lines.size(); i++) {
+        text_texture = load_texttexture(renderer, lines[i].c_str(), text_color);
 
-    text_rect = { x, y, width, height};
+        text_rect = { x, y + static_cast<int>(i) * lineHeight, width, height };
 
-    SDL_QueryTexture(text_texture, nullptr, nullptr, &text_rect.w, &text_rect.h);
+        SDL_QueryTexture(text_texture, nullptr, nullptr, &text_rect.w, &text_rect.h);
 
-    text_rect.x += width / 2 - text_rect.w / 2;
-    text_rect.y += height / 2 - text_rect.h / 2;
+        if (text_align == "center") {
+            text_rect.x += width / 2 - text_rect.w / 2 + text_margin;
+            text_rect.y += height / 2 - text_rect.h / 2 + text_margin;
+        }
+        else if (text_align == "top") {
+            text_rect.x += width / 2 - text_rect.w / 2 + text_margin;
+            text_rect.y += 0 + text_margin;
+        }
+        else if (text_align == "left") {
+            text_rect.x += 0 + text_margin;
+            text_rect.y += height / 2 - text_rect.h / 2 + text_margin;
+        }
 
-    SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
-    
-    SDL_DestroyTexture(text_texture);
+        SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
+
+        SDL_DestroyTexture(text_texture);
+    }
 }
 
 void Button::set_text(const char *text)
